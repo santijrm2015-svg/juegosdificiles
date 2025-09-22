@@ -1,0 +1,791 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;500;700&display=swap');
+
+.game-container{
+    height: 100%;
+    width: 100%;
+    background-color: #09041A;
+    padding-top: 40px;
+    padding-bottom: 40px;
+    padding-left: 20px;
+    padding-right: 20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: auto auto;
+    grid-template-areas: 
+    "nivel . ."
+    "main main buttons"
+    "main main info"
+    ;
+    row-gap: 15px;
+    column-gap: 10px;
+    position: fixed;
+}
+
+.color9{
+    border: 5px solid #FFCC01;
+    box-shadow: 0px 1px 60px #FFCC01;
+    background-color: #FFCC01;
+}
+
+.color8{
+    border: 5px solid #FF6501;
+    box-shadow: 0px 1px 60px #FF6501;
+    background-color: #FF6501;
+}
+
+
+.color7{
+    border: 5px solid red;
+    box-shadow: 0px 1px 60px red;
+    background-color: red;
+}
+
+.color6{
+    border: 5px solid #FFA80B;
+    box-shadow: 0px 1px 60px #FFA80B;
+    background-color: #FFA80B;
+}
+
+.color5{
+    border: 5px solid #18B921;
+    box-shadow: 0px 1px 50px #18B921;
+    background-color: #18B921;
+}
+
+.color4{
+    border: 5px solid #279CFE;
+    box-shadow: 0px 1px 60px #279CFE;
+    background-color: #279CFE;
+}
+
+.color3{
+    border: 5px solid #CB02E4;
+    box-shadow: 0px 1px 50px #CB02E4;
+    background-color: #CB02E4;
+}
+
+.color2{
+    border: 5px solid #FD5E8A;
+    box-shadow: 0px 1px 60px #FD5E8A;
+    background-color: #FD5E8A;
+}
+
+.color1{
+    border: 5px solid #DA8FFD;
+    box-shadow: 0px 1px 50px #DA8FFD;
+    background-color: #FFF9A7;
+}
+
+canvas{
+    border-radius: 5px;
+    margin-bottom: 20px;
+    margin-top: 10px;
+    justify-self: center;
+    grid-area: main;
+}
+
+.btns{
+    display: grid;
+    grid-template-columns: repeat(3, minmax(60px, 140px));
+    grid-template-rows: repeat(3, 60px);
+    grid-template-areas: 
+    " . up ."
+    "left . right"
+    ". down ."
+    ;
+    justify-items: center;
+    align-items: center;
+    margin: 0 auto 20px;
+    grid-area: buttons;
+    align-self: center;
+    justify-self: start;
+    font-size: 18px;
+}
+
+#up{
+    grid-area: up;
+}
+
+#left{
+    grid-area: left;
+}
+
+#right{
+    grid-area: right;
+}
+
+#down{
+    grid-area: down;
+}
+
+.button--standar{
+    width: 80%;
+    height: 100%;
+    background-color: #D03ED3;
+    color: #FFFEF0;
+    font-weight: 700;
+    border-radius: 5px;
+    border: 2px solid #F1C40F;
+    cursor: pointer;
+    box-shadow: 2px 2px 3px 2px #D03ED3;
+
+}
+
+.fa-caret-left{
+    margin-right: 5px;
+}
+
+.fa-caret-right{
+    margin-left: 5px;
+}
+
+.fa-caret-left, .fa-caret-up, .fa-caret-down, .fa-caret-right{
+    font-size: 16px;
+}
+
+.button-media{
+    display: none;
+}
+
+.messages{
+    display: grid;
+    grid-template-columns: 130px 150px;
+    grid-template-rows: repeat(3, 60px);
+    grid-template-areas: 
+    "life life--counter"
+    "timer time--counting"
+    "record record--display"
+    ;
+    padding: 10px 20px 10px 20px;
+    justify-self: center;
+    grid-area: info;
+    align-self:center;
+    border: 6px solid #DA8FFD;
+    border-radius: 10px;
+    box-shadow: 0px 1px 50px #DA8FFD;
+    background-color: #580AD1;
+    width: auto;
+    justify-content: center;
+    column-gap: 10px;
+}
+
+.life{
+    grid-area: life;
+    align-self: center;
+}
+.timer{
+    grid-area: timer;
+    align-self: center;
+
+}
+.record{
+    grid-area: record;
+    align-self: center;
+}
+
+.messages p{
+    color: #C0FEED;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-family: 'Roboto', sans-serif;
+    /*-webkit-text-stroke: 1px #62C788;*/
+    text-shadow: 0px 1px 4px #3EF781;
+    font-size: 18px;
+    word-spacing: 2px;
+    letter-spacing: 2px;
+}
+
+/*Clase 15: Contador de vidas */
+
+.life--counter{
+    color: #FEBBD6;
+    font-size: 30px;
+    text-shadow: -2px 1px 0px rgb(94, 7, 7);
+    align-self: center;
+    justify-self: center;
+    border-radius: 10px;
+    width: 100%;
+    padding: 1px 10px 1px 10px;
+    grid-area: life--counter;
+}
+
+.game--over--message, .winner--message{
+    position: absolute;
+    top: 10%;
+    left: 10%;
+    width: 50%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+
+
+/*Clase 17: Sistema de tiempo y puntajes */
+
+.time--counter, .record--display{
+    grid-area: time--counting;
+    color: #A7FFFC;
+    font-size: 20px;
+    font-weight: 700;
+    font-family: 'Roboto', sans-serif;
+    align-self: center;
+    padding-left: 10px;
+    text-shadow: 0px 1px 4px #269AE0;
+    -webkit-text-stroke: 0.3px #269AE0;
+}
+
+/*Clase 18: ¿Qué es localStorage?-RETO */
+
+.record--display{
+    grid-area: record--display;
+    color: #FFF4EF;
+    text-shadow: 0px 1px 4px #F03B00;
+    -webkit-text-stroke: 0.3px #F03B00;
+}
+
+/*Clase 18: Mejora: TARJETA DE ALERT PARA NUEVO RECORD*/
+
+.message--record, .win-without-record, .message--defeat{
+    width: 100%;
+    height: 100%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    /*background-color: #FEE3E2;*/
+    border: 2px solid #FEE3E2;
+    border-radius: 5px;
+    box-shadow: 0px 1px 10px #FEE3E2;
+    font-family: 'Roboto', sans-serif;
+    font-size: 35px;
+    color: #FEE3E2;
+    font-weight: 700;
+    row-gap: 65px;
+    padding: 10px 10px 20px 10px;
+    position: absolute;
+    right: 0;
+    left: 0;
+    align-items: center;
+    background-image: url(./assets/7872299.jpg);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    justify-content: center;
+}
+
+.message--record .button--standar, .win-without-record .button--standar,.message--defeat .button--standar{
+    width: 270px;
+    height: auto;
+    padding: 10px 5px;
+    font-size: 24px;
+    text-transform: uppercase;
+    background-color: #FEE3E2;
+    color:#E11116;
+    border: 2px solid #E11116;
+    box-shadow: 0px 0px 4px 5px #FEE3E2;
+    word-spacing: 3px;
+    letter-spacing: 2px;
+    text-align: center;
+    
+}
+
+.message--record div .button--standar{
+    height: 100px;
+    padding: 20px 10px;
+    text-decoration: none;
+}
+
+.message--record div{
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+    column-gap: 50px;
+ 
+}
+
+.fa-ranking-star, .fa-trophy,.fa-ghost{
+    font-size: 80px;
+}
+
+.new--record{
+    font-size: 45px;
+    text-shadow: 0px 0px 15px #D2E3FF;
+    color: #FFFEF0;
+}
+
+/*Clase 18: Mejora: TARJETA DE GANADOR SIN NUEVO RECORD*/
+
+.win-without-record{
+    background-image: url(./assets/7872292.jpg);
+    border: 2px solid #D5F9E8;
+    box-shadow: 0px 1px 10px #D5F9E8;
+    padding: 20px 10px 20px 10px;
+}
+
+.win-without-record .button--standar{
+    background-color: #D5F9E8;
+    color:#17D22C;
+    border: 2px solid #17D22C;
+    box-shadow: 0px 0px 4px 5px #D5F9E8;
+}
+
+.win-without-record p{
+    color: #FEF2B6;
+}
+
+.fa-trophy{
+    color: #FEF2B6;
+}
+
+/*Se  cambió el color rojo cuando se pierde y el azúl por nuevo récord*/
+
+
+.message--record{
+    background-image: url(./assets/4814407.jpg);
+    border: 2px solid #D5E2FE;
+    box-shadow: 0px 1px 10px #D5E2FE;
+    padding: 20px 10px 20px 10px;
+}
+
+.message--record .button--standar{
+    background-color: #D5E2FE;
+    color:#175AF8;
+    border: 2px solid #175AF8;
+    box-shadow: 0px 0px 4px 5px #D5E2FE;
+}
+/*Clase 19: Mejora: MENSAJE_INICIAL*/
+
+.welcome--message{
+    width: 100%;
+    height: 100%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    /*background-color: #FEE3E2;*/
+    border: 3px solid #F8F7FC;
+    border-radius: 5px;
+    box-shadow: 0px 1px 30px #F8F7FC;
+    font-family: 'Roboto', sans-serif;
+    font-size: 35px;
+    color: #F8F7FC;
+    font-weight: 700;
+    row-gap: 65px;
+    padding: 30px 10px 20px 10px;
+    position: absolute;
+    left: 0;
+    right: 0;
+    align-items: center;
+    background-image: url(./assets/Inicio1.jpg);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    justify-content: center;
+    justify-content: space-around;
+}
+
+.fa-gamepad{
+    font-size: 60px;
+    color: #F8F7FC;
+}
+
+.welcome--message .button--standar{
+    height: auto;
+    padding: 8px 12px;
+    font-size: 18px;
+    text-transform: uppercase;
+    background-color: #F8F7FC;
+    color:#51A1DC;
+    border: 3px solid #51A1DC;
+    box-shadow: 0px 0px 4px 5px white;
+    word-spacing: 3px;
+    letter-spacing: 2px;
+    text-align: center;
+    text-decoration: none;
+}
+.welcome--message p{
+    text-shadow: 0px 0px 10px #F8F7FC;
+}
+
+.welcome--message--title{
+    padding-top: 35px;
+}
+
+.button-big{
+    font-size: 18px;
+}
+
+.level--show{
+    grid-area: nivel;
+    font-size: 20px;
+    color: #DA8FFD;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-family: 'Roboto', sans-serif;
+    text-shadow: 0px 1px 4px #DA8FFD;
+    word-spacing: 2px;
+    letter-spacing: 2px;
+    padding-left: 30px;
+}
+
+.welcome--message .welcome--contact{
+    margin: 0 auto;
+    width: 80%;
+    font-size: 18px;
+    display: grid;
+    grid-template-columns: repeat(2,minmax(300px, 1fr));
+    text-shadow: 0px 0px 10px #F8F7FC;
+    padding: 20px 40px;
+    border: 1px solid #F8F7FC;
+    box-shadow: 0px 0px 20px 10px #F8F7FC;
+    border-radius: 10px;
+}
+
+.contact--logo{
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    align-items: center;
+
+}
+
+.contact--logo img{
+    display: flex;
+    justify-content: center;
+    box-shadow: 0px 0px 4px 5px #F8F7FC;
+}
+
+.contact--media{
+    display: grid;
+    grid-template-columns: repeat(5,1fr);
+    grid-template-areas: 
+    "title title title title title"
+    "git tik ytb insta faceb"
+    ;
+    row-gap: 15px;
+}
+
+.contact--media p{
+    grid-area: title;
+}
+
+.fa-github{
+    grid-area: git;
+}
+
+.fa-tiktok{
+    grid-area: tik;
+}
+
+.fa-youtube{
+    grid-area: ytb;
+}
+
+.fa-instagram{
+    grid-area: insta;
+}
+
+.fa-square-facebook{
+    grid-area: faceb;
+}
+
+.social-icons{
+    color: #F8F7FC;
+    text-shadow: 0px 0px 10px #F8F7FC;
+    font-size: 35px;
+}
+
+.welcome--message div:nth-child(3){
+    display: flex;
+    column-gap: 40px;
+}
+
+
+.message--defeat > div{
+    display: flex;
+    column-gap: 30px;
+}
+
+.win-without-record > div{
+    display: flex;
+    column-gap: 30px;
+}
+
+/*Medias queries*/
+
+@media screen and (max-width: 1020px){
+    .game-container{
+        grid-template-columns: 1fr 1fr;
+        grid-template-areas: 
+        "nivel nivel "
+        "main buttons "
+        "main buttons"
+        "info info"
+        ;
+        row-gap: 0;
+        padding-top: 25px;
+   
+    }
+
+    .btns{
+        grid-template-columns: 1fr;
+        grid-template-rows: repeat(4,60px);
+        grid-template-areas: 
+        " up "
+        " down "
+        " left "
+        " right "
+
+        ;
+        row-gap: 20px;
+        justify-items: center;
+        align-items: center;
+        margin: 0;
+        grid-area: buttons;
+        align-self: center;
+        justify-self: start;
+        font-size: 18px;
+        width: 100%;
+    }
+
+    .button-big{
+        display: none;
+    }
+
+    .button-media{
+        display: block;
+    }
+    .fa-caret-left, .fa-caret-up, .fa-caret-down, .fa-caret-right{
+        font-size: 56px;
+    }
+    #up-cel{
+        grid-area: up;
+    }
+    
+    #left-cel{
+        grid-area: left;
+    }
+    
+    #right-cel{
+        grid-area: right;
+
+    }
+    
+    #down-cel{
+        grid-area: down;
+    }
+
+    .messages{
+        display: grid;
+        grid-template-columns: repeat(3, 140px);
+        grid-template-rows: repeat(2, 40px);
+        grid-template-areas: 
+        "life timer  record "
+        "life--counter time--counting  record--display"
+        ;
+        grid-area: info;
+        border: 2px solid #DA8FFD;
+        box-shadow: 0px 1px 10px #DA8FFD;
+        justify-content: center;
+        column-gap: 10px;
+    }    
+
+    .canvas{
+        justify-self: center;
+        align-self: center;
+    }
+
+    .level--show{
+        padding-left: 12px;
+    }
+
+    .welcome--message .welcome--contact{
+        width: 90%;
+        grid-template-columns: repeat(auto-fit,minmax(250px, 1fr));
+        padding: 20px 20px;
+        row-gap: 20px;
+    }
+
+    .contact--logo{
+        column-gap: 10px;
+    }
+
+    .message--record div .button--standar{
+        width: 200px;
+        height: 80px;
+        font-size: 18px;
+    }
+    
+}
+
+
+
+
+@media screen and (max-width: 600px){
+    .game-container{
+        grid-template-columns: 1fr;
+        grid-template-areas: 
+        "nivel"
+        "main "
+        "buttons"
+        "info"
+        ;
+        row-gap: 0;
+    }
+
+    .btns{
+        display: grid;
+        margin-bottom: 50px;
+        grid-template-columns: repeat(3, minmax(60px, 140px));
+        grid-template-rows: repeat(3, 40px);
+        grid-template-areas: 
+        " . up ."
+        "left . right"
+        ". down ."
+        ;
+        justify-items: center;
+        align-items: center;
+        margin: 0 auto 20px;
+        grid-area: buttons;
+        align-self: center;
+        justify-self: start;
+        justify-content: center;
+    }
+    
+    .messages{
+        display: grid;
+        grid-template-columns: 130px 140px;
+        grid-template-rows: repeat(3, 30px);
+        grid-template-areas: 
+        "life life--counter"
+        "timer time--counting"
+        "record record--display"
+        ;
+        padding: 10px 20px 10px 20px;
+        justify-self: center;
+        grid-area: info;
+        align-self:center;
+        justify-self: center;
+        border: 2px solid #DA8FFD;
+        border-radius: 10px;
+        box-shadow: 0px 1px 10px #DA8FFD;
+        background-color: #580AD1;
+        width: auto;
+        justify-content: center;
+        column-gap: 10px;
+        align-self: flex-start;
+    }
+
+    .welcome--message div:nth-child(3){
+        column-gap: 30px;
+    }
+
+    #up-cel{
+        grid-area: up;
+    }
+    
+    #left-cel{
+        grid-area: left;
+        justify-self: end;
+    }
+    
+    #right-cel{
+        grid-area: right;
+        justify-self: start;
+
+    }
+    
+    #down-cel{
+        grid-area: down;
+    }
+
+    .fa-caret-left, .fa-caret-up, .fa-caret-down, .fa-caret-right{
+        font-size: 26px;
+    }
+
+    .life--counter{
+        font-size: 20px;
+        text-shadow: 1px 3px 1px #C35A7B;
+    }
+
+    .game--over--message, .winner--message{
+        width: 80%;
+    }
+    .arrow-small{
+        color: #F1C40F;
+        font-size: 40px;
+    }
+
+
+    /*Clase 19: Mejora: MENSAJE_INICIAL*/
+    
+    .welcome--message .button--standar{
+        font-size: 16px;
+        padding: 8px 10px;
+    }
+    
+    /*Clase 18: Mejora: TARJETA DE ALERT PARA NUEVO RECORD*/
+
+    .message--record, .win-without-record, .message--defeat{
+        font-size: 30px;
+        row-gap: 35px;
+    }
+
+    .message--record .button--standar, .win-without-record .button--standar,.message--defeat .button--standar{
+        width: 80%;
+        font-size: 16px;
+    }
+
+    .new--record{
+        font-size: 35px;
+    }
+
+    .level--show{
+        padding-left: 10px;
+    }
+
+    .welcome--message .welcome--contact{
+        font-size: 15px;
+        padding: 15px 15px;
+    }
+
+    .social-icons{
+        font-size: 25px;
+    }
+
+    .contact--media{
+        grid-template-columns: repeat(3,1fr);
+        grid-template-areas: 
+        "title title title"
+        "git tik ytb"
+        "insta faceb . "
+        ;
+        row-gap:5px;
+    }
+    
+    .contact--media p{
+        align-self: center;
+    }
+
+    .message--record div{
+        grid-template-columns: repeat(1,1fr);
+        row-gap: 35px;
+
+    }
+
+    .message--record div .button--standar{
+        width: 220px;
+        font-size: 15px;
+        height: 65px;
+    }
+    
+   
+}
+
+.inactive{
+    display: none;
+}
